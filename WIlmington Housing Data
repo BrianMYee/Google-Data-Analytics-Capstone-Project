@@ -1,0 +1,74 @@
+install.packages('tidyverse')
+## Let's import  the functions we are going to work with including the TidyVerse and especially ggplot2. 
+## I am also going to add some maps here
+
+library(tidyverse)
+install.packages("ggplot2")
+library(ggplot2)
+library(maps)
+## Make sure the working directory is the Capstone Folder
+
+getwd()
+
+## Let's read the csv we downloaded from Realtor.com
+
+read.csv('RDC_Inventory_Core_Metrics_County_History_Pender_New_Hanover_Brunswick.csv')
+
+## Now let's set it as the variable called Wilmington_data for ease of use
+
+Wilmington_data <- read.csv('RDC_Inventory_Core_Metrics_County_History_Pender_New_Hanover_Brunswick.csv')
+
+# We'll inspect the column names to see what we are working with here
+
+colnames(Wilmington_data)
+head(Wilmington_data)
+tibble(Wilmington_data)
+
+
+
+## OK, so we've had a look at the data.  Let's try to pull some information from it
+## We will use GGPLOT2 to see if the amount of time the housing spent 
+## on the market increased or decreased over the last 5 years
+## We will also rename some of the labels here
+ggplot(data=Wilmington_data)+
+  geom_smooth(mapping=aes(x=month_date_yyyymm, y=median_days_on_market, color=county_name))+
+  labs(title="Days on Market by Year: Wilmington, NC Metro", 
+       x="Year Sold: 2016-2021", y="Housing Days on Market", subtitle= "Data Sourced from Realtor.com", 
+       color="County", caption= "Created in R by Brian Yee, 2021")+
+  annotate('text', x = 202005, y=125, label= "Onset of Pandemic", size=3)
+## Let's save as a png file  
+ggsave("Wilmington_Housing_Days_on_market_smooth.png")
+
+## Now we will look at Median Price per SQ FT vs the Year Sold
+ggplot(data=Wilmington_data)+
+  geom_smooth(mapping=aes(x=month_date_yyyymm, y=median_listing_price_per_square_foot, color=county_name,))+
+  labs(title="Median Price per SQ FT: Wilmington, NC Metro", 
+       x="Year Sold: 2016-2021", y="Median Price per Square Foot", subtitle= "Data Sourced from Realtor.com", 
+       color="County", caption= "Created in R by Brian Yee, 2021")+
+  annotate('text', x = 202005, y=200, label= "Onset of Pandemic", size=3)
+#Lets Save this as a PNG file
+ggsave("Wilmington_Housing_Price_per_SQFT_smooth.png")
+
+## Now we will look at the Active Listing Count over time
+ggplot(data=Wilmington_data)+
+  geom_smooth(mapping=aes(x=month_date_yyyymm, y=active_listing_count, color=county_name,))+
+  labs(title="Active Listing Count: Wilmington, NC Metro", 
+       x="Year Sold: 2016-2021", y="Active Listing Count", subtitle= "Data Sourced from Realtor.com", 
+       color="County", caption= "Created in R by Brian Yee, 2021")+
+  annotate('text', x = 202005, y=2000, label= "Onset of Pandemic", size=3)
+  
+#Lets Save this as a PNG file
+ggsave("Wilmington_Housing_Active_Listing_Count.png")
+
+ggplot(data=Wilmington_data)+
+  geom_smooth(mapping=aes(x=month_date_yyyymm, y=median_listing_price, color=county_name,))+
+  labs(title="Median Listing Price: Wilmington, NC Metro", 
+       x="Year Sold: 2016-2021", y="Median Listing Price", subtitle= "Data Sourced from Realtor.com", 
+       color="County", caption= "Created in R by Brian Yee, 2021")+
+  annotate('text', x = 202005, y=450000, label= "Onset of Pandemic", size=3)
+
+
+#Lets Save this as a PNG file
+ggsave("Wilmington_Housing_Median_Listing_Price.png")
+
+tibble(Wilmington_data)
